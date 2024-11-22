@@ -595,7 +595,7 @@ const char *TextFormat(const char *text, ...);              // Formatting of tex
 //void SetClipboardText(const char *text)
 //const char *GetClipboardText(void)
 
-//void ShowCursor(void)
+//void RevealCursor(void)
 //void HideCursor(void)
 //void EnableCursor(void)
 //void DisableCursor(void)
@@ -719,7 +719,7 @@ void InitWindow(int width, int height, const char *title)
 }
 
 // Close window and unload OpenGL context
-void CloseWindow(void)
+void KillWindow(void)
 {
 #if defined(SUPPORT_GIF_RECORDING)
     if (gifRecording)

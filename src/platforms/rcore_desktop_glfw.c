@@ -995,7 +995,7 @@ Image GetClipboardImage(void)
 #endif // SUPPORT_CLIPBOARD_IMAGE
 
 // Show mouse cursor
-void ShowCursor(void)
+void RevealCursor(void)
 {
     glfwSetInputMode(platform.handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     CORE.Input.Mouse.cursorHidden = false;

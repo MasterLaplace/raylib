@@ -50,8 +50,8 @@
     #define RGFW_OPENGL_ES2
 #endif
 
-void ShowCursor(void);
-void CloseWindow(void);
+void RevealCursor(void);
+void KillWindow(void);
 
 #if defined(__linux__)
     #define _INPUT_EVENT_CODES_H
@@ -66,10 +66,10 @@ void CloseWindow(void);
 #if defined(_WIN32) || defined(_WIN64)
     #define WIN32_LEAN_AND_MEAN
 	#define Rectangle rectangle_win32
-    #define CloseWindow CloseWindow_win32
-    #define ShowCursor __imp_ShowCursor
+    #define KillWindow CloseWindow_win32
+    #define RevealCursor __imp_ShowCursor
 	#define _APISETSTRING_
-	
+
 	#undef MAX_PATH
 
 	__declspec(dllimport) int __stdcall MultiByteToWideChar(unsigned int CodePage, unsigned long dwFlags, const char *lpMultiByteStr, int cbMultiByte, wchar_t *lpWideCharStr, int cchWideChar);
@@ -84,8 +84,8 @@ void CloseWindow(void);
 
 #if defined(_WIN32) || defined(_WIN64)
     #undef DrawText
-    #undef ShowCursor
-    #undef CloseWindow
+    #undef RevealCursor
+    #undef KillWindow
     #undef Rectangle
 
 	#undef MAX_PATH
@@ -246,7 +246,7 @@ bool WindowShouldClose(void)
 
 // Toggle fullscreen mode
 void ToggleFullscreen(void)
-{   
+{
     RGFW_window_maximize(platform.window);
     ToggleBorderlessWindowed();
 }
@@ -702,7 +702,7 @@ Image GetClipboardImage(void)
 #endif // SUPPORT_CLIPBOARD_IMAGE
 
 // Show mouse cursor
-void ShowCursor(void)
+void RevealCursor(void)
 {
     RGFW_window_showMouse(platform.window, true);
     CORE.Input.Mouse.cursorHidden = false;
@@ -1197,7 +1197,7 @@ void PollInputEvents(void)
                         int button = (axis == GAMEPAD_AXIS_LEFT_TRIGGER)? GAMEPAD_BUTTON_LEFT_TRIGGER_2 : GAMEPAD_BUTTON_RIGHT_TRIGGER_2;
                         int pressed = (value > 0.1f);
                         CORE.Input.Gamepad.currentButtonState[event->joystick][button] = pressed;
-                        
+
                         if (pressed) CORE.Input.Gamepad.lastButtonPressed = button;
                         else if (CORE.Input.Gamepad.lastButtonPressed == button) CORE.Input.Gamepad.lastButtonPressed = 0;
                     }
@@ -1289,8 +1289,8 @@ int InitPlatform(void)
     RGFW_area screenSize = RGFW_getScreenSize();
     CORE.Window.display.width = screenSize.w;
     CORE.Window.display.height = screenSize.h;
-    /* 
-        I think this is needed by Raylib now ? 
+    /*
+        I think this is needed by Raylib now ?
         If so, rcore_destkop_sdl should be updated too
     */
     SetupFramebuffer(CORE.Window.display.width, CORE.Window.display.height);
